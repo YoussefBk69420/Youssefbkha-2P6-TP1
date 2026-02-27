@@ -28,14 +28,15 @@ namespace adaptation_tp1_console
             #region TODO 11 : Chargements des listes à partir des fichiers CSV (5%)
             // TODO 11 : Appeler la méthode ChargerMorceaux() pour charger le répertoire musical de la radio étudiante, ainsi
             // que la liste de lecture de l'utilisateur SI APPROPRIÉ
-           
+            repertoireRadioEtudiante = ChargerMorceaux(BIBLIOTHEQUE, repertoireRadioEtudiante);
+
             #endregion
 
             #region TODO 12 : Lier l'ensemble des fonctions (18%)
             /// TODO 12 :
             /// Effectuer la logique du menu utilisateur dans une boucle qui prend fin seulement lorsque l'utilisateur décide de quitter.
             /// Astuces : la boucle while et le switch-case vous seront utiles ;)
-            
+
             #endregion
 
         }
@@ -116,7 +117,11 @@ namespace adaptation_tp1_console
         /// <returns>  liste de morceaux contenant une chanson additionnelle  </returns>
         /// ----------------------------------------------------------------------------------------
         /// 
-
+        internal static List<Morceau> OpérationAjouter(List<Morceau> pListeMorceaux, string pArtiste, string pAlbum, string pTitre, int pCote, int pDurée)
+        {
+            pListeMorceaux.Add(new Morceau(pArtiste, pAlbum, pTitre, pCote, pDurée));
+            return pListeMorceaux;
+        }
 
 
 
@@ -131,6 +136,13 @@ namespace adaptation_tp1_console
         /// <param name="pIndexMorceau"> index du morceau à supprimer dans la liste </param>
         /// <returns>  liste de morceaux contenant une chanson en moins  </returns>
         /// ----------------------------------------------------------------------------------------
+        internal static List<Morceau> OpérationSupprimer(List<Morceau> pListeMorceaux, int pIndexMorceau)
+        {
+            pListeMorceaux.RemoveAt(pIndexMorceau);
+            return pListeMorceaux;
+        }
+
+
 
         #endregion
 
@@ -144,6 +156,16 @@ namespace adaptation_tp1_console
         /// <param name="pCote"> valeur de la nouvelle cote </param>
         /// <returns>  liste de morceaux modifiée  </returns>
         /// ----------------------------------------------------------------------------------------
+        internal static List<Morceau> OpérationModiferCote(List<Morceau> pListeMorceaux, int pIndexMorceau, int pCote)
+        {
+            if(pIndexMorceau >= 0 && pIndexMorceau < pListeMorceaux.Count)
+            {
+                pListeMorceaux[pIndexMorceau].Cote = pCote;
+            }
+            return pListeMorceaux;
+        }
+
+
 
         #endregion
 
@@ -155,6 +177,22 @@ namespace adaptation_tp1_console
         /// <param name="pListeMorceaux"> liste de morceaux </param>
         /// <returns>  liste de morceaux triée  </returns>
         /// ----------------------------------------------------------------------------------------
+        internal static List<Morceau> OpérationTrier(List<Morceau> pListeMorceaux)
+        {
+            for(int i = 0; i < pListeMorceaux.Count - 1; i++)
+            {
+                for(int j = 0; j < pListeMorceaux.Count - i - 1; j++)
+                {
+                    if(pListeMorceaux[j].Cote < pListeMorceaux[j + 1].Cote)
+                    {
+                        Morceau temp = pListeMorceaux[j];
+                        pListeMorceaux[j] = pListeMorceaux[j + 1];
+                        pListeMorceaux[j + 1] = temp;
+                    }
+                }
+            }
+            return pListeMorceaux;
+        }
         #endregion
 
         #region TODO 07 : Afficher les informations d'un morceau (3%)
@@ -166,6 +204,21 @@ namespace adaptation_tp1_console
         /// <param name="pListeMorceaux"> liste de morceaux </param>
         /// <param name="pIndexMorceau"> index du morceau sélectionné </param>
         /// ----------------------------------------------------------------------------------------
+        internal static void AfficherMorceauCourant(List<Morceau> pListeMorceaux, int pIndexMorceau)
+        {
+            if (pIndexMorceau < 0 || pIndexMorceau >= pListeMorceaux.Count)
+            {
+                Console.WriteLine("invalide");
+                return;
+            }
+            Morceau morceau = pListeMorceaux[pIndexMorceau];
+            Console.WriteLine($"Morceau courant : {morceau.Titre} - {morceau.Artiste}");
+            Console.WriteLine($"Album : {morceau.Album}");
+            Console.WriteLine($"cote : {morceau.Cote}");
+            Console.WriteLine($"duree : {morceau.Durée}");
+
+
+        }
 
         #endregion
 
